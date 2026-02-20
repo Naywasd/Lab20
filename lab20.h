@@ -64,6 +64,12 @@ Unit::Unit(string t,string n){
 	equipment = NULL;
 }
 
+Equipment::Equipment(int h, int a, int d){
+    hpmax = h;
+    atk = a;
+    def = d;
+}
+
 void Unit::showStatus(){
 	if(type == "Hero"){
 		cout << "---------------------------------------\n"; 
@@ -130,6 +136,25 @@ void Unit::dodge(){
 bool Unit::isDead(){
 	if(hp <= 0) return true;
 	else return false;
+}
+
+void Unit::equip(Equipment *new_eq){
+    if(equipment != NULL){
+        vector<int> old_stat = equipment->getStat();
+        hpmax -= old_stat[0];
+        atk -= old_stat[1];
+        def -= old_stat[2];
+    }
+
+    equipment = new_eq;
+    vector<int> new_stat = equipment->getStat();
+    hpmax += new_stat[0];
+    atk += new_stat[1];
+    def += new_stat[2];
+
+    if(hp > hpmax) {
+        hp = hpmax;
+    }
 }
 
 void drawScene(char p_action,int p,char m_action,int m){
